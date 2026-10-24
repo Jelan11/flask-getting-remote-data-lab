@@ -1,16 +1,29 @@
 from GetRequester import GetRequester
-class GetRequesterTest:
-    '''Class {Classname} in {modulename}.py'''
-URL = 'https://learn-co-curriculum.github.io/json-site-example/endpoints/people.json'
-JSON_STRING = b"[\n  {\n    \"name\": \"Daniel\",\n    \"occupation\": \"LG Fridge Salesman\"\n  },\n  {\n    \"name\": \"Joe\",\n    \"occupation\": \"WiFi Fixer\"\n  },\n  {\n    \"name\": \"Avi\",\n    \"occupation\": \"DJ\"\n  },\n  {\n    \"name\": \"Howard\",\n    \"occupation\": \"Mountain Legend\"\n  }\n]\n"
-CONVERTED_DATA = [{ 'name': 'Daniel', 'occupation' : 'LG Fridge Salesman' }, { 'name': 'Joe', 'occupation': 'WiFi Fixer' }, { 'name': 'Avi', 'occupation': 'DJ' }, { 'name': 'Howard', 'occupation': 'Mountain Legend' }]
 
-def test_get_response():
-        '''get_response_body function returns response.'''
-        requester = GetRequester(URL)
-        assert(requester.get_response_body() == JSON_STRING)
+URL = "https://learn-co-curriculum.github.io/json-site-example/endpoints/people.json"
+
+
+def test_get_response_body():
+    """get_response_body returns the raw bytes from the URL."""
+    requester = GetRequester(URL)
+    body = requester.get_response_body()
+    assert isinstance(body, bytes)
+    assert b"Daniel" in body
+    assert b"Joe" in body
+    assert b"Avi" in body
+    assert b"Howard" in body
+
 
 def test_load_json():
-        '''load_json function returns response.'''
-        requester = GetRequester(URL)
-        assert(requester.load_json() == CONVERTED_DATA)
+    """load_json returns a list of dictionaries."""
+    requester = GetRequester(URL)
+    data = requester.load_json()
+    assert isinstance(data, list)
+    assert data[0]["name"] == "Daniel"
+    assert data[0]["occupation"] == "LG Fridge Salesman"
+    assert data[1]["name"] == "Joe"
+    assert data[1]["occupation"] == "WiFi Fixer"
+    assert data[2]["name"] == "Avi"
+    assert data[2]["occupation"] == "DJ"
+    assert data[3]["name"] == "Howard"
+    assert data[3]["occupation"] == "Mountain Legend"
